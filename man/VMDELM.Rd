@@ -7,7 +7,7 @@ Variational Mode Decomposition Based Extreme Learning Machine Model
 The VMDELM function computes forecasted value with different forecasting evaluation criteria for Variational Mode Decomposition (VMD) Based Extreme learning machine (ELM).
 }
 \usage{
-VMDELM (data, stepahead=10, nIMF=4, alpha=2000, tau=0)}
+VMDELM (data, stepahead=10, nIMF=4, alpha=2000, tau=0, D=FALSE)}
 \arguments{
   \item{data}{
 Input univariate time series (ts) data.
@@ -23,6 +23,9 @@ The balancing parameter.
 }
   \item{tau}{
 Time-step of the dual ascent.
+}
+  \item{D}{
+a boolean.
 }
 }
 \details{

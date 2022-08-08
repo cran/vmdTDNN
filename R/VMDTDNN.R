@@ -1,4 +1,4 @@
-#' @importFrom vmd vmd
+#' @importFrom VMDecomp vmd
 #' @importFrom forecast nnetar forecast
 #' @importFrom utils head tail
 #' @importFrom graphics plot
@@ -7,18 +7,20 @@
 #'
 
 
-VMDTDNN <- function (data, stepahead=10, nIMF=4, alpha=2000, tau=0)
+VMDTDNN <- function(data, stepahead=10, nIMF=4, alpha=2000, tau=0, D=FALSE)
 {
-  v<- vmd::vmd(data , alpha=2000, tau=0, K=nIMF, orderModes=TRUE)
-  AllIMF<-v$as.data.frame()
+  data <- ts(data)
+  data<- as.vector(data)
+  v<- vmd(data , alpha=2000, tau=0, K=nIMF, DC=D, init=1, tol = 1e-6)
+  AllIMF<-v$u
   data_trn <- ts(head(data, round(length(data) - stepahead)))
   data_test <- ts(tail(data, stepahead))
   IMF_trn <- AllIMF[-c(((length(data) - stepahead) + 1):length(data)),
   ]
   Fcast_AllIMF <- NULL
-  for (AllIMF in 3:(ncol(IMF_trn)-1)) {
+  for (AllIMF in 1:(ncol(IMF_trn))) {
     IndIMF <- NULL
-    IndIMF <- IMF_trn[ ,AllIMF]
+    IndIMF <- IMF_trn[, AllIMF]
     VMDTDNNFit <- forecast::nnetar(as.ts(IndIMF))
     VMDTDNN_fcast = forecast::forecast(VMDTDNNFit, h = stepahead)
     VMDTDNN_fcast_Mean = VMDTDNN_fcast$mean
@@ -28,9 +30,8 @@ VMDTDNN <- function (data, stepahead=10, nIMF=4, alpha=2000, tau=0)
   MAE_VMDTDNN = mean(abs(data_test - FinalVMDTDNN_fcast))
   MAPE_VMDTDNN = mean(abs(data_test - FinalVMDTDNN_fcast)/data_test)
   RMSE_VMDTDNN = sqrt(mean((data_test - FinalVMDTDNN_fcast)^2))
-  AllIMF_plots <- plot(v)
-  return(list( AllIMF = AllIMF, AllIMF_plots = AllIMF_plots, data_test = data_test,
-               AllIMF_forecast= Fcast_AllIMF, FinalVMDTDNN_forecast = FinalVMDTDNN_fcast,
-               MAE_VMDTDNN = MAE_VMDTDNN, MAPE_VMDTDNN = MAPE_VMDTDNN,
-               RMSE_VMDTDNN = RMSE_VMDTDNN ))
+  return(list(AllIMF = AllIMF, data_test = data_test,
+              AllIMF_forecast = Fcast_AllIMF, FinalVMDTDNN_forecast = FinalVMDTDNN_fcast,
+              MAE_VMDTDNN = MAE_VMDTDNN, MAPE_VMDTDNN = MAPE_VMDTDNN,
+              RMSE_VMDTDNN = RMSE_VMDTDNN ))
 }

@@ -1,7 +1,7 @@
 Package: vmdTDNN
 Type: Package
 Title: VMD Based Time Delay Neural Network Model
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
   c(person(given = "Kapil",
          family = "Choudhary",
@@ -22,15 +22,15 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
-Imports: forecast, nnfor, vmd
+Imports: forecast, nnfor, VMDecomp
 Depends: R (>= 2.10)
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2022-02-17 07:03:19 UTC; kapil
+Packaged: 2022-08-04 05:13:21 UTC; kapil
 Author: Kapil Choudhary [aut, cre],
   Girish Kumar Jha [aut, ths, ctb],
   Rajender Parsad [aut, ctb],
   Ronit Jaiswal [aut, ctb]
 Repository: CRAN
-Date/Publication: 2022-02-17 20:20:02 UTC
+Date/Publication: 2022-08-08 13:40:02 UTC
